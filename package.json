@@ -1,0 +1,17 @@
+{
+    "name": "node-final",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "server": "cd backend && nodemon server.js",
+        "client": "cd frontend && npm start",
+        "dev": "concurrently \"npm run server\" \"npm run client\""
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "concurrently": "^8.2.1"
+    }
+}
