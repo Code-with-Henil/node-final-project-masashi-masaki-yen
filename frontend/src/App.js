@@ -34,6 +34,7 @@ export default function Application() {
 		};
 	}, [day, appointments]);
 	useEffect(() => {
+		console.log("here");
 		axios
 			.get("http://localhost:3001/days")
 			.then((res) => res.data)
