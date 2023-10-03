@@ -2,7 +2,7 @@ import express from "express";
 import scheduleRouter from "./routes/scheduleRouter.js";
 const server = express();
 
-const PORT = 8080;
+const PORT = 3001;
 const HOST = "localhost";
 
 server.listen(PORT, HOST, () => {
@@ -11,6 +11,6 @@ server.listen(PORT, HOST, () => {
 
 server.use(express.json());
 
-server.use("/", scheduleRouter);
+server.use("/days", scheduleRouter);
 
 export default server;

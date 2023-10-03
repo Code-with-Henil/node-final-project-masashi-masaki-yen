@@ -9,6 +9,7 @@ import {
 const scheduleRouter = express.Router();
 
 scheduleRouter.get("/", async (req, res) => {
+	console.log("here");
 	getAppointment(req, res);
 });
 
