@@ -1,3 +1,9 @@
+CREATE TABLE "day" (
+  "id" INT,
+  "day_title" VARCHAR(10),
+  PRIMARY KEY ("id")
+);
+
 CREATE TABLE "interviewer" (
   "id" INT,
   "interviewer_name" VARCHAR(100),
