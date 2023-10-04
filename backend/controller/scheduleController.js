@@ -1,19 +1,21 @@
 import AppointmentModel from "../models/appointmentModel.js";
 
 export const getAppointment = async (req, res) => {
-  const appointments = await AppointmentModel.getAppointment();
-  console.log(appointments);
-  res.send("getAppointment");
+	const appointments = await AppointmentModel.getAppointment();
+	console.log(appointments);
+	res.send("getAppointment");
 };
 
 export const pushAppointment = async (req, res) => {
-  res.send("pushAppointment");
+	res.send("pushAppointment");
 };
 
 export const putAppointment = async (req, res) => {
-  res.send("putAppointment");
+	res.send("putAppointment");
 };
 
 export const deleteAppointment = async (req, res) => {
-  res.send("deleteAppointment");
+	const { id } = req.params;
+	const deleteAppointment = await AppointmentModel.deleteAppointment(id);
+	console.log(deleteAppointment);
 };
