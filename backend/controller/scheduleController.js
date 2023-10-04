@@ -1,21 +1,19 @@
-import { client } from "../helper/db.js";
+import AppointmentModel from "../models/appointmentModel.js";
 
 export const getAppointment = async (req, res) => {
-	await client.connect();
-	const { rows } = await client.query("SELECT * FROM appointment");
-	console.log(rows);
-	await client.end();
-	res.send("getAppointment");
+  const appointments = await AppointmentModel.getAppointment();
+  console.log(appointments);
+  res.send("getAppointment");
 };
 
 export const pushAppointment = async (req, res) => {
-	res.send("pushAppointment");
+  res.send("pushAppointment");
 };
 
 export const putAppointment = async (req, res) => {
-	res.send("putAppointment");
+  res.send("putAppointment");
 };
 
 export const deleteAppointment = async (req, res) => {
-	res.send("deleteAppointment");
+  res.send("deleteAppointment");
 };
