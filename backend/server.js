@@ -1,5 +1,6 @@
 import express from "express";
 import scheduleRouter from "./routes/scheduleRouter.js";
+import daysRouter from "./routes/daysRouter.js";
 const server = express();
 
 const PORT = 3001;
@@ -11,6 +12,6 @@ server.listen(PORT, HOST, () => {
 
 server.use(express.json());
 
-server.use("/days", scheduleRouter);
-
+server.use("/schedule", scheduleRouter);
+server.use("/days", daysRouter);
 export default server;
