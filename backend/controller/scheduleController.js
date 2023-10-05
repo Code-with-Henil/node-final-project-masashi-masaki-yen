@@ -2,6 +2,7 @@ import AppointmentModel from "../models/appointmentModel.js";
 import ModifiedInterviewModel from "../models/modifyInterviewModel.js";
 import DeleteModel from "../models/deleteModel.js";
 import InterviewModel from "../models/interviewModel.js";
+import AvaitableInterviewer from "../models/availableInterviewer.js";
 
 export const getAppointment = async (req, res) => {
   const { day } = req.params;
@@ -26,6 +27,29 @@ export const getAppointment = async (req, res) => {
     }
   });
   res.status(200).json(formattedData);
+};
+
+export const getAvaitableInterviewers = async (req, res) => {
+  const { day } = req.params;
+  const interviewers = await AvaitableInterviewer.get(day);
+
+  const groupedData = {};
+
+  interviewers.forEach((item) => {
+    const { appointment_id, available_interviewer_id, interviewer_id, interviewer_name, interviewer_img } = item;
+
+    if (!groupedData[appointment_id]) {
+      groupedData[appointment_id] = [];
+    }
+
+    groupedData[appointment_id].push({
+      id: interviewer_id,
+      name: interviewer_name,
+      avatar: interviewer_img,
+    });
+  });
+  console.log(groupedData);
+  res.status(200).json(groupedData);
 };
 
 export const pushAppointment = async (req, res) => {
