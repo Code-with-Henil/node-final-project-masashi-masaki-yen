@@ -3,11 +3,16 @@ import { client } from "../helper/db.js";
 class DayModel {
   async get() {
     const { rows } = await client.query(`
-        SELECT day.id, day.day_title, COUNT(available_interviewer.id) AS spots FROM day
-        LEFT JOIN appointment ON day.id = appointment.day_id
-        LEFT JOIN available_interviewer ON appointment.id = available_interviewer.appointment_id AND available_interviewer.is_available = true
-        GROUP BY day.id, day.day_title
-        ORDER BY day.id ASC;
+    SELECT 
+        day.id,
+        day.day_title,
+        (
+            SELECT COUNT(appointment.id) - COUNT(interview.id) 
+            FROM appointment 
+            LEFT JOIN interview ON appointment.id = interview.appointment_id
+            WHERE appointment.day_id = day.id
+        ) as spots
+    FROM day;
     `);
     return rows;
   }

@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import io from "socket.io-client";
 
-import apt_dummy from "./__mocks__/appointments.json";
-
 import "./App.scss";
 
 import DayList from "./components/DayList";
@@ -14,7 +12,7 @@ const socket = io.connect("http://localhost:8080");
 export default function Application() {
   const [day, setDay] = useState("Monday");
   const [days, setDays] = useState([]);
-  const [appointments, setAppointments] = useState(apt_dummy);
+  const [appointments, setAppointments] = useState([]);
   useEffect(() => {
     socket.on("cancel_interview", (appointment_id) => {
       cancelInterview(appointment_id);
