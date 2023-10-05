@@ -1,6 +1,7 @@
-import { client } from "../helper/db.js";
+import DayModel from "../models/dayModel.js";
 
 export const getDays = async (req, res) => {
-  const { rows } = await client.query("SELECT * FROM appointment");
-  console.log(rows);
+  const DayModelInstance = new DayModel();
+  const days = await DayModelInstance.get();
+  res.json(days);
 };

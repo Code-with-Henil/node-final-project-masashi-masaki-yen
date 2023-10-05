@@ -24,5 +24,7 @@ export const putAppointment = async (req, res) => {
 };
 
 export const deleteAppointment = async (req, res) => {
-	res.send("deleteAppointment");
+	const { id } = req.params;
+	const deleteAppointment = await AppointmentModel.deleteAppointment(id);
+	console.log(deleteAppointment);
 };
