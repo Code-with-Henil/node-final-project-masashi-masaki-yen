@@ -10,7 +10,11 @@ const HOST = "localhost";
 server.listen(PORT, HOST, () => {
   console.log(`server listening on: http://${HOST}:${PORT}`);
 });
-
+server.use(express.urlencoded({ extended: true }));
+server.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  next();
+});
 server.use(express.json());
 
 server.use("/schedule", scheduleRouter);
