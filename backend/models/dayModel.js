@@ -1,7 +1,7 @@
 import { client } from "../helper/db.js";
 
 class DayModel {
-  async get() {
+  static async get() {
     const { rows } = await client.query(`
     SELECT 
         day.id,

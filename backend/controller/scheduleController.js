@@ -17,6 +17,7 @@ export const getAppointment = async (req, res) => {
 
     if (item.interview_id !== null) {
       formattedData[id].interview = {
+        id: item.interview_id,
         student: item.interviewee_name,
         interviewer: {
           id: item.interviewer_id,
@@ -48,7 +49,6 @@ export const getAvaitableInterviewers = async (req, res) => {
       avatar: interviewer_img,
     });
   });
-  console.log(groupedData);
   res.status(200).json(groupedData);
 };
 

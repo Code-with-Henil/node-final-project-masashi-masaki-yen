@@ -36,7 +36,6 @@ export default function Application() {
       .get("http://localhost:3001/days")
       .then((res) => res.data)
       .then((days) => {
-        console.log(days);
         setDays(days);
       });
   }, []);
