@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import io from "socket.io-client";
 
-import apt_dummy from "./__mocks__/appointments.json";
-
 import "./App.scss";
 
 import DayList from "./components/DayList";
@@ -14,7 +12,8 @@ const socket = io.connect("http://localhost:8080");
 export default function Application() {
   const [day, setDay] = useState("Monday");
   const [days, setDays] = useState([]);
-  const [appointments, setAppointments] = useState(apt_dummy);
+  const [appointments, setAppointments] = useState([]);
+  const [avaitableInterviewers, setAvaitableInterviewers] = useState([]);
   useEffect(() => {
     socket.on("cancel_interview", (appointment_id) => {
       cancelInterview(appointment_id);
@@ -37,7 +36,6 @@ export default function Application() {
       .get("http://localhost:3001/days")
       .then((res) => res.data)
       .then((days) => {
-        console.log(days);
         setDays(days);
       });
   }, []);
@@ -47,6 +45,14 @@ export default function Application() {
       .then((res) => res.data)
       .then((appointments) => setAppointments(appointments));
   }, [day]);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3001/schedule/interviewers/${day}`)
+      .then((res) => res.data)
+      .then((avaitableInterviewers) => setAvaitableInterviewers(avaitableInterviewers));
+  }, [day]);
+
   function bookInterview(id, interview) {
     const isEdit = appointments[id].interview;
     setAppointments((prev) => {
@@ -114,14 +120,11 @@ export default function Application() {
             key={appointment.id}
             {...appointment}
             bookInterview={(interview) => {
-              // socket.emit("book_interview", {
-              //     appointment_id: appointment.id,
-              //     interview,
-              // });
               bookInterview(appointment.id, interview);
             }}
             cancelInterview={cancelInterview}
             socket={socket}
+            interviewers={avaitableInterviewers[appointment.id]}
           />
         ))}
         <Appointment key="last" time="5pm" />

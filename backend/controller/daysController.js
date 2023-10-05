@@ -1,7 +1,6 @@
 import DayModel from "../models/dayModel.js";
 
 export const getDays = async (req, res) => {
-  const DayModelInstance = new DayModel();
-  const days = await DayModelInstance.get();
+  const days = await DayModel.get();
   res.json(days);
 };
