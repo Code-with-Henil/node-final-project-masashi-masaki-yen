@@ -1,5 +1,7 @@
 import AppointmentModel from "../models/appointmentModel.js";
 import ModifiedInterviewModel from "../models/modifyInterviewModel.js";
+import DeleteModel from "../models/deleteModel.js";
+
 export const getAppointment = async (req, res) => {
 	const appointments = await AppointmentModel.getAppointment();
 	console.log(appointments);
@@ -25,6 +27,6 @@ export const putAppointment = async (req, res) => {
 
 export const deleteAppointment = async (req, res) => {
 	const { id } = req.params;
-	const deleteAppointment = await AppointmentModel.deleteAppointment(id);
+	const deleteAppointment = await DeleteModel.deleteAppointment(id);
 	console.log(deleteAppointment);
 };
