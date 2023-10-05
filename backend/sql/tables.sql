@@ -4,26 +4,29 @@ CREATE TABLE "day" (
 );
 
 CREATE TABLE "interviewer" (
-  "id" SERIAL PRIMARY KEY,
+  "id" INT,
   "interviewer_name" VARCHAR(100),
-  "interviewer_img" VARCHAR(500)
+  "interviewer_img" VARCHAR(500),
+  PRIMARY KEY ("id")
 );
 
 CREATE TABLE "appointment" (
-  "id" SERIAL PRIMARY KEY,
+  "id" INT,
   "schedule_time_from" TIME,
   "schedule_time_to" TIME,
   "day_id" INT,
+  PRIMARY KEY ("id"),
   CONSTRAINT "FK_appointment.day_id"
     FOREIGN KEY ("day_id")
       REFERENCES "day"("id")
 );
 
 CREATE TABLE "available_interviewer" (
-  "id" SERIAL PRIMARY KEY,
+  "id" INT,
   "interviewer_id" INT,
   "is_available" BOOLEAN,
   "appointment_id" INT,
+  PRIMARY KEY ("id"),
   CONSTRAINT "FK_available_interviewer.interviewer_id"
     FOREIGN KEY ("interviewer_id")
       REFERENCES "interviewer"("id"),
@@ -33,10 +36,11 @@ CREATE TABLE "available_interviewer" (
 );
 
 CREATE TABLE "interview" (
-  "id" SERIAL PRIMARY KEY,
+  "id" INT,
   "interviewee_name" VARCHAR(50),
   "interviewer_id" INT,
   "appointment_id" INT,
+  PRIMARY KEY ("id"),
   CONSTRAINT "FK_interview.appointment_id"
     FOREIGN KEY ("appointment_id")
       REFERENCES "appointment"("id"),
