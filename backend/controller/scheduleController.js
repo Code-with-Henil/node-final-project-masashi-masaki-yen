@@ -8,9 +8,19 @@ export const getAppointment = async (req, res) => {
 };
 
 export const pushAppointment = async (req, res) => {
-    const interviews = await InterviewModel.pushAppointment();
-    console.log(interviews);
-    res.send("pushAppointment");
+    try {
+        const { intervieweeName, interviewerId, appointmentId } = req.body;
+        const interviews = await InterviewModel.pushAppointment(
+            intervieweeName,
+            interviewerId,
+            appointmentId
+        );
+        console.log("interviews", interviews);
+        res.status(201).send("Appointment pushed successfully");
+    } catch (error) {
+        console.error("Error pushing appointment:", error);
+        res.status(500).send("Error pushing appointment");
+    }
 };
 
 export const putAppointment = async (req, res) => {
