@@ -1,7 +1,6 @@
 CREATE TABLE "day" (
-  "id" INT,
-  "day_title" VARCHAR(10),
-  PRIMARY KEY ("id")
+  "id" SERIAL PRIMARY KEY,
+  "day_title" VARCHAR(10)
 );
 
 CREATE TABLE "interviewer" (
