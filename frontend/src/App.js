@@ -110,6 +110,39 @@ export default function Application() {
     }
   }
   function cancelInterview(id) {
+    // axios
+    //   .delete(`http://localhost:3001/schedule/${id}`)
+    //   .then((response) => {
+    //     console.log("success", response);
+    //   })
+    //   .catch((error) => {
+    //     console.error("error", error);
+    //   });
+    alert("works");
+    setAppointments((prev) => {
+      const updatedAppointment = {
+        ...prev[id],
+        interview: null,
+      };
+      const updatedAppointments = {
+        ...prev,
+        [id]: updatedAppointment,
+      };
+      return updatedAppointments;
+    });
+    setDays((prev) => {
+      const updatedDay = {
+        ...prev[day],
+        spots: Number(prev[day].spots) + 1,
+      };
+      const updatedDays = {
+        ...prev,
+        [day]: updatedDay,
+      };
+      return updatedDays;
+    });
+  }
+  function deleteInterview(id) {
     axios
       .delete(`http://localhost:3001/schedule/${id}`)
       .then((response) => {
@@ -159,6 +192,7 @@ export default function Application() {
               bookInterview(appointment.id, interview);
             }}
             cancelInterview={cancelInterview}
+            deleteInterview={deleteInterview}
             socket={socket}
             interviewers={avaitableInterviewers[appointment.id]}
           />
