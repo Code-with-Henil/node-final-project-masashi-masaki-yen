@@ -1,10 +1,15 @@
 import { client } from "../helper/db.js";
 
 class DeleteModel {
-	async deleteAppointment(id) {
-		const { rows } = await client.query("DELETE FROM interview WHERE id = $1 RETURNING id", [id]);
-		return rows;
-	}
+  static async deleteAppointment(id) {
+    try {
+      const { rows } = await client.query("DELETE FROM interview WHERE appointment_id = $1 RETURNING id", [id]);
+      return rows;
+    } catch (error) {
+      console.log("Error deleting");
+      throw error;
+    }
+  }
 }
 
 export default DeleteModel;
