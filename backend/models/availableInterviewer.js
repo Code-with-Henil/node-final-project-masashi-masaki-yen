@@ -1,6 +1,6 @@
 import { client } from "../helper/db.js";
 
-class AvaitableInterviewer {
+class AvaiLableInterviewer {
   static async get(day) {
     const { rows } = await client.query(`
       SELECT
@@ -21,4 +21,4 @@ class AvaitableInterviewer {
   }
 }
 
-export default AvaitableInterviewer;
+export default AvaiLableInterviewer;

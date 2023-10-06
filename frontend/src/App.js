@@ -56,7 +56,6 @@ export default function Application() {
   function bookInterview(id, interview) {
     const isEdit = appointments[id].interview;
     if (isEdit) {
-      console.log("edit");
       axios
         .put(`http://localhost:3001/schedule/${id}`, {
           interviewee_name: interview.student,
