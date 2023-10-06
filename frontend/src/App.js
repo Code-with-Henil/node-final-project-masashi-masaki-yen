@@ -132,7 +132,7 @@ export default function Application() {
     setDays((prev) => {
       const updatedDay = {
         ...prev[day],
-        spots: prev[day].spots + 1,
+        spots: Number(prev[day].spots) + 1,
       };
       const updatedDays = {
         ...prev,
