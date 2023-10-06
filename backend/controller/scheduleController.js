@@ -69,12 +69,19 @@ export const putAppointment = async (req, res) => {
   const { interviewee_name, interviewer_id, appointment_id } = req.body;
   const modifyingAppointment = await ModifiedInterviewModel.putAppointment(id, interviewee_name, interviewer_id, appointment_id);
 
-  console.log(modifyingAppointment);
+  console.log("modified", modifyingAppointment);
+  res.status(201).send("Modified Appointment successfully");
 };
 
 export const deleteAppointment = async (req, res) => {
   const { id } = req.params;
-  console.log("id", id);
-  const deleteAppointment = await DeleteModel.deleteAppointment(id);
-  console.log(deleteAppointment);
+
+  if (!id) {
+    console.log("id does not match");
+    res.status(404).send("Delete Appointment failed");
+  } else {
+    const deleteAppointment = await DeleteModel.deleteAppointment(id);
+    console.log("delete", deleteAppointment);
+    res.status(201).send("Delete Appointment successfully");
+  }
 };
