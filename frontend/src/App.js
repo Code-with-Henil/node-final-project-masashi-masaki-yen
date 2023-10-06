@@ -55,6 +55,35 @@ export default function Application() {
 
   function bookInterview(id, interview) {
     const isEdit = appointments[id].interview;
+    if (isEdit) {
+      console.log("edit");
+      axios
+        .put(`http://localhost:3001/schedule/${id}`, {
+          interviewee_name: interview.student,
+          interviewer_id: interview.interviewer.id,
+          appointment_id: id,
+        })
+        .then((response) => {
+          console.log("success", response);
+        })
+        .catch((error) => {
+          console.error("error", error);
+        });
+    } else {
+      axios
+        .post("http://localhost:3001/schedule/", {
+          interviewee_name: interview.student,
+          interviewer_id: interview.interviewer.id,
+          appointment_id: id,
+        })
+        .then((response) => {
+          console.log("success", response);
+        })
+        .catch((error) => {
+          console.error("error", error);
+        });
+    }
+
     setAppointments((prev) => {
       const appointment = {
         ...prev[id],
@@ -81,7 +110,14 @@ export default function Application() {
     }
   }
   function cancelInterview(id) {
-    alert("works");
+    axios
+      .delete(`http://localhost:3001/schedule/${id}`)
+      .then((response) => {
+        console.log("success", response);
+      })
+      .catch((error) => {
+        console.error("error", error);
+      });
     setAppointments((prev) => {
       const updatedAppointment = {
         ...prev[id],
@@ -96,7 +132,7 @@ export default function Application() {
     setDays((prev) => {
       const updatedDay = {
         ...prev[day],
-        spots: prev[day].spots + 1,
+        spots: Number(prev[day].spots) + 1,
       };
       const updatedDays = {
         ...prev,
