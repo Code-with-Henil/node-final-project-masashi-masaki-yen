@@ -62,7 +62,7 @@ const Appointment = (props) => {
           onSave={save}
           onCancel={() => {
             alert("works");
-            console.log(props.cancelInterview);
+            // console.log(props.cancelInterview);
 
             setAdd(false);
           }}
