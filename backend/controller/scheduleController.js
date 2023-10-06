@@ -55,6 +55,7 @@ export const getAvaitableInterviewers = async (req, res) => {
 export const pushAppointment = async (req, res) => {
   try {
     const { interviewee_name, interviewer_id, appointment_id } = req.body;
+    console.log("req.body", req.body);
     const interviews = await InterviewModel.pushAppointment(interviewee_name, interviewer_id, appointment_id);
     console.log("interviews", interviews);
     res.status(201).send("Appointment pushed successfully");
@@ -67,21 +68,15 @@ export const pushAppointment = async (req, res) => {
 export const putAppointment = async (req, res) => {
   const { id } = req.params;
   const { interviewee_name, interviewer_id, appointment_id } = req.body;
-  console.log(id);
-  if (!id) {
-    console.log("id does not match");
-    res.status(404).send("Modified Appointment failed");
-  } else {
-    const modifyingAppointment = await ModifiedInterviewModel.putAppointment(
-      id,
-      interviewee_name,
-      interviewer_id,
-      appointment_id
-    );
+  const modifyingAppointment = await ModifiedInterviewModel.putAppointment(
+    id,
+    interviewee_name,
+    interviewer_id,
+    appointment_id
+  );
 
-    console.log("modified", modifyingAppointment);
-    res.status(201).send("Modified Appointment successfully");
-  }
+  console.log("modified", modifyingAppointment);
+  res.status(201).send("Modified Appointment successfully");
 };
 
 export const deleteAppointment = async (req, res) => {
