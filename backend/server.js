@@ -13,8 +13,11 @@ server.listen(PORT, HOST, () => {
 server.use(express.urlencoded({ extended: true }));
 server.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
   next();
 });
+
 server.use(express.json());
 
 server.use("/schedule", scheduleRouter);

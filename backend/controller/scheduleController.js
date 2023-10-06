@@ -54,8 +54,8 @@ export const getAvaitableInterviewers = async (req, res) => {
 
 export const pushAppointment = async (req, res) => {
   try {
-    const { intervieweeName, interviewerId, appointmentId } = req.body;
-    const interviews = await InterviewModel.pushAppointment(intervieweeName, interviewerId, appointmentId);
+    const { interviewee_name, interviewer_id, appointment_id } = req.body;
+    const interviews = await InterviewModel.pushAppointment(interviewee_name, interviewer_id, appointment_id);
     console.log("interviews", interviews);
     res.status(201).send("Appointment pushed successfully");
   } catch (error) {
@@ -74,6 +74,7 @@ export const putAppointment = async (req, res) => {
 
 export const deleteAppointment = async (req, res) => {
   const { id } = req.params;
+  console.log("id", id);
   const deleteAppointment = await DeleteModel.deleteAppointment(id);
   console.log(deleteAppointment);
 };
