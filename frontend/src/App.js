@@ -13,7 +13,7 @@ export default function Application() {
   const [day, setDay] = useState("Monday");
   const [days, setDays] = useState([]);
   const [appointments, setAppointments] = useState([]);
-  const [avaitableInterviewers, setAvaitableInterviewers] = useState([]);
+  const [availableInterviewers, setAvailableInterviewers] = useState([]);
   useEffect(() => {
     socket.on("book_interview", (data) => {
       const { appointment_id, interview } = data;
@@ -46,10 +46,11 @@ export default function Application() {
     axios
       .get(`http://localhost:3001/schedule/interviewers/${day}`)
       .then((res) => res.data)
-      .then((avaitableInterviewers) => setAvaitableInterviewers(avaitableInterviewers));
+      .then((availableInterviewers) => setAvailableInterviewers(availableInterviewers));
   }, [day]);
 
   function bookInterview(id, interview) {
+    console.log(interview);
     const isEdit = appointments[id].interview;
     if (isEdit) {
       axios
@@ -79,6 +80,8 @@ export default function Application() {
         });
     }
 
+    console.log("appt", appointments);
+
     setAppointments((prev) => {
       const appointment = {
         ...prev[id],
@@ -88,6 +91,8 @@ export default function Application() {
         ...prev,
         [id]: appointment,
       };
+      console.log(appointment);
+      console.log(updatedAppointments);
       return updatedAppointments;
     });
     if (!isEdit) {
@@ -118,10 +123,14 @@ export default function Application() {
         ...prev[id],
         interview: null,
       };
+
+      delete updatedAppointment.interview;
       const updatedAppointments = {
         ...prev,
         [id]: updatedAppointment,
       };
+      console.log("here", updatedAppointment);
+      console.log("here2", updatedAppointments);
       return updatedAppointments;
     });
     setDays((prev) => {
@@ -155,7 +164,7 @@ export default function Application() {
             }}
             deleteInterview={deleteInterview}
             socket={socket}
-            interviewers={avaitableInterviewers[appointment.id]}
+            interviewers={availableInterviewers[appointment.id]}
           />
         ))}
         <Appointment key="last" time="5pm" />
