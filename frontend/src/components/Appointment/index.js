@@ -34,7 +34,7 @@ const Appointment = (props) => {
             }}
             onConfirm={() => {
               props.deleteInterview(props.id);
-              console.log("Deleting confirmation");
+              console.log(props);
               socket.emit("cancel_interview", props.id);
               setIsDeleting(false);
             }}

@@ -18,7 +18,6 @@ scheduleRouter.get("/interviewers/:day", async (req, res) => {
 });
 
 scheduleRouter.post("/", async (req, res) => {
-  // console.log("interviewTesting");
   pushAppointment(req, res);
 });
 

@@ -32,6 +32,7 @@ export default function Application() {
       .get("http://localhost:3001/days")
       .then((res) => res.data)
       .then((days) => {
+        console.log(days);
         setDays(days);
       });
   }, []);
@@ -39,7 +40,10 @@ export default function Application() {
     axios
       .get(`http://localhost:3001/schedule/${day}`)
       .then((res) => res.data)
-      .then((appointments) => setAppointments(appointments));
+      .then((appointments) => {
+        console.log(appointments);
+        setAppointments(appointments);
+      });
   }, [day]);
 
   useEffect(() => {
@@ -50,7 +54,6 @@ export default function Application() {
   }, [day]);
 
   function bookInterview(id, interview) {
-    console.log(interview);
     const isEdit = appointments[id].interview;
     if (isEdit) {
       axios
@@ -79,8 +82,6 @@ export default function Application() {
           console.error("error", error);
         });
     }
-
-    console.log("appt", appointments);
 
     setAppointments((prev) => {
       const appointment = {
@@ -129,8 +130,8 @@ export default function Application() {
         ...prev,
         [id]: updatedAppointment,
       };
-      console.log("here", updatedAppointment);
-      console.log("here2", updatedAppointments);
+      console.log(updatedAppointment);
+      console.log(updatedAppointments);
       return updatedAppointments;
     });
     setDays((prev) => {
