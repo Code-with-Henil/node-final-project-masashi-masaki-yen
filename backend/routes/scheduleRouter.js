@@ -4,7 +4,7 @@ import {
   pushAppointment,
   putAppointment,
   deleteAppointment,
-  getAvaitableInterviewers,
+  getAvailableInterviewers,
 } from "../controller/scheduleController.js";
 
 const scheduleRouter = express.Router();
@@ -14,11 +14,10 @@ scheduleRouter.get("/:day", async (req, res) => {
 });
 
 scheduleRouter.get("/interviewers/:day", async (req, res) => {
-  getAvaitableInterviewers(req, res);
+  getAvailableInterviewers(req, res);
 });
 
 scheduleRouter.post("/", async (req, res) => {
-  // console.log("interviewTesting");
   pushAppointment(req, res);
 });
 

@@ -13,7 +13,7 @@ export default function Application() {
   const [day, setDay] = useState("Monday");
   const [days, setDays] = useState([]);
   const [appointments, setAppointments] = useState([]);
-  const [avaitableInterviewers, setAvaitableInterviewers] = useState([]);
+  const [availableInterviewers, setAvailableInterviewers] = useState([]);
   useEffect(() => {
     socket.on("book_interview", (data) => {
       const { appointment_id, interview } = data;
@@ -32,6 +32,7 @@ export default function Application() {
       .get("http://localhost:3001/days")
       .then((res) => res.data)
       .then((days) => {
+        console.log(days);
         setDays(days);
       });
   }, []);
@@ -39,20 +40,22 @@ export default function Application() {
     axios
       .get(`http://localhost:3001/schedule/${day}`)
       .then((res) => res.data)
-      .then((appointments) => setAppointments(appointments));
+      .then((appointments) => {
+        console.log(appointments);
+        setAppointments(appointments);
+      });
   }, [day]);
 
   useEffect(() => {
     axios
       .get(`http://localhost:3001/schedule/interviewers/${day}`)
       .then((res) => res.data)
-      .then((avaitableInterviewers) => setAvaitableInterviewers(avaitableInterviewers));
+      .then((availableInterviewers) => setAvailableInterviewers(availableInterviewers));
   }, [day]);
 
   function bookInterview(id, interview) {
     const isEdit = appointments[id].interview;
     if (isEdit) {
-      console.log("edit");
       axios
         .put(`http://localhost:3001/schedule/${id}`, {
           interviewee_name: interview.student,
@@ -89,6 +92,8 @@ export default function Application() {
         ...prev,
         [id]: appointment,
       };
+      console.log(appointment);
+      console.log(updatedAppointments);
       return updatedAppointments;
     });
     if (!isEdit) {
@@ -119,10 +124,14 @@ export default function Application() {
         ...prev[id],
         interview: null,
       };
+
+      delete updatedAppointment.interview;
       const updatedAppointments = {
         ...prev,
         [id]: updatedAppointment,
       };
+      console.log(updatedAppointment);
+      console.log(updatedAppointments);
       return updatedAppointments;
     });
     setDays((prev) => {
@@ -156,7 +165,7 @@ export default function Application() {
             }}
             deleteInterview={deleteInterview}
             socket={socket}
-            interviewers={avaitableInterviewers[appointment.id]}
+            interviewers={availableInterviewers[appointment.id]}
           />
         ))}
         <Appointment key="last" time="5pm" />

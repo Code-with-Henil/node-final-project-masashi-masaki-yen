@@ -4,12 +4,6 @@ import daysRouter from "./routes/daysRouter.js";
 import { client } from "./helper/db.js";
 const server = express();
 
-const PORT = 3001;
-const HOST = "localhost";
-
-server.listen(PORT, HOST, () => {
-  console.log(`server listening on: http://${HOST}:${PORT}`);
-});
 server.use(express.urlencoded({ extended: true }));
 server.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
