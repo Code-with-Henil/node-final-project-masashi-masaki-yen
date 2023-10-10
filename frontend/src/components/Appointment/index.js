@@ -22,6 +22,7 @@ const Appointment = (props) => {
     setEdit(false);
     props.bookInterview(interview);
   }
+  console.log(socket);
   return (
     <article className="appointment">
       <Header time={props.time} />
@@ -37,6 +38,7 @@ const Appointment = (props) => {
               console.log(props);
               socket.emit("cancel_interview", props.id);
               setIsDeleting(false);
+              setAdd(false);
             }}
           />
         ) : edit ? (

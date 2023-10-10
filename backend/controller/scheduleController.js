@@ -55,8 +55,7 @@ export const getAvailableInterviewers = async (req, res) => {
 export const pushAppointment = async (req, res) => {
   try {
     const { interviewee_name, interviewer_id, appointment_id } = req.body;
-    const interviews = await InterviewModel.pushAppointment(interviewee_name, interviewer_id, appointment_id);
-    console.log("interviews", interviews);
+    await InterviewModel.pushAppointment(interviewee_name, interviewer_id, appointment_id);
     res.status(201).send("Appointment pushed successfully");
   } catch (error) {
     console.error("Error pushing appointment:", error);
@@ -67,14 +66,7 @@ export const pushAppointment = async (req, res) => {
 export const putAppointment = async (req, res) => {
   const { id } = req.params;
   const { interviewee_name, interviewer_id, appointment_id } = req.body;
-  const modifyingAppointment = await ModifiedInterviewModel.putAppointment(
-    id,
-    interviewee_name,
-    interviewer_id,
-    appointment_id
-  );
-
-  console.log("modified", modifyingAppointment);
+  await ModifiedInterviewModel.putAppointment(id, interviewee_name, interviewer_id, appointment_id);
   res.status(201).send("Modified Appointment successfully");
 };
 
@@ -85,8 +77,7 @@ export const deleteAppointment = async (req, res) => {
     console.log("id does not match");
     res.status(404).send("Delete Appointment failed");
   } else {
-    const deleteAppointment = await DeleteModel.deleteAppointment(id);
-    console.log("delete", deleteAppointment);
+    await DeleteModel.deleteAppointment(id);
     res.status(201).send("Delete Appointment successfully");
   }
 };

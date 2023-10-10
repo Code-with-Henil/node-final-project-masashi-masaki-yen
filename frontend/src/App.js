@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import io from "socket.io-client";
+import { io } from "socket.io-client";
 
 import "./App.scss";
 
 import DayList from "./components/DayList";
 import Appointment from "./components/Appointment";
 
-const socket = io.connect("http://localhost:8080");
+const socket = io("http://localhost:8080");
 
 export default function Application() {
   const [day, setDay] = useState("Monday");
@@ -16,6 +16,7 @@ export default function Application() {
   const [availableInterviewers, setAvailableInterviewers] = useState([]);
   useEffect(() => {
     socket.on("book_interview", (data) => {
+      console.log(data);
       const { appointment_id, interview } = data;
       if (appointments[appointment_id]) {
         bookInterview(appointment_id, interview);
@@ -23,32 +24,36 @@ export default function Application() {
     });
 
     return () => {
-      socket.off("cancel_interview");
-      socket.off("book_interview");
+      // socket.off("cancel_interview");
+      socket.off("book_interview", (data) => {
+        console.log(data);
+        const { appointment_id, interview } = data;
+        if (appointments[appointment_id]) {
+          bookInterview(appointment_id, interview);
+        }
+      });
     };
   }, [day, appointments]);
   useEffect(() => {
     axios
-      .get("http://localhost:3001/days")
+      .get("http://localhost:8080/days")
       .then((res) => res.data)
       .then((days) => {
-        console.log(days);
         setDays(days);
       });
   }, []);
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/schedule/${day}`)
+      .get(`http://localhost:8080/schedule/${day}`)
       .then((res) => res.data)
       .then((appointments) => {
-        console.log(appointments);
         setAppointments(appointments);
       });
   }, [day]);
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/schedule/interviewers/${day}`)
+      .get(`http://localhost:8080/schedule/interviewers/${day}`)
       .then((res) => res.data)
       .then((availableInterviewers) => setAvailableInterviewers(availableInterviewers));
   }, [day]);
@@ -57,7 +62,7 @@ export default function Application() {
     const isEdit = appointments[id].interview;
     if (isEdit) {
       axios
-        .put(`http://localhost:3001/schedule/${id}`, {
+        .put(`http://localhost:8080/schedule/${id}`, {
           interviewee_name: interview.student,
           interviewer_id: interview.interviewer.id,
           appointment_id: id,
@@ -70,7 +75,7 @@ export default function Application() {
         });
     } else {
       axios
-        .post("http://localhost:3001/schedule/", {
+        .post("http://localhost:8080/schedule/", {
           interviewee_name: interview.student,
           interviewer_id: interview.interviewer.id,
           appointment_id: id,
@@ -94,6 +99,7 @@ export default function Application() {
       };
       console.log(appointment);
       console.log(updatedAppointments);
+      socket.emit("book_interview", updatedAppointments);
       return updatedAppointments;
     });
     if (!isEdit) {
@@ -112,7 +118,7 @@ export default function Application() {
   }
   function deleteInterview(id) {
     axios
-      .delete(`http://localhost:3001/schedule/${id}`)
+      .delete(`http://localhost:8080/schedule/${id}`)
       .then((response) => {
         console.log("success", response);
       })
@@ -132,6 +138,7 @@ export default function Application() {
       };
       console.log(updatedAppointment);
       console.log(updatedAppointments);
+      socket.emit("book_interview", updatedAppointments);
       return updatedAppointments;
     });
     setDays((prev) => {
