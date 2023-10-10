@@ -12,7 +12,7 @@ const Appointment = (props) => {
   const [add, setAdd] = React.useState(false);
   const [edit, setEdit] = React.useState(false);
   const [isDeleting, setIsDeleting] = React.useState(false);
-  const { socket } = props;
+  // const { socket } = props;
   const { interviewers } = props;
   function save(name, interviewer) {
     const interview = {
@@ -22,7 +22,7 @@ const Appointment = (props) => {
     setEdit(false);
     props.bookInterview(interview);
   }
-  console.log(socket);
+  // console.log(socket);
   return (
     <article className="appointment">
       <Header time={props.time} />
@@ -35,8 +35,9 @@ const Appointment = (props) => {
             }}
             onConfirm={() => {
               props.deleteInterview(props.id);
-              console.log(props);
-              socket.emit("cancel_interview", props.id);
+              props.socket.emit("delete_interview", props.id);
+              console.log("props", props);
+              // socket.emit("cancel_interview", props.id);
               setIsDeleting(false);
               setAdd(false);
             }}

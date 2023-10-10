@@ -16,22 +16,56 @@ export default function Application() {
   const [availableInterviewers, setAvailableInterviewers] = useState([]);
   useEffect(() => {
     socket.on("book_interview", (data) => {
-      console.log(data);
-      const { appointment_id, interview } = data;
-      if (appointments[appointment_id]) {
-        bookInterview(appointment_id, interview);
+      // 1: be sure that you are in the right day
+      // 2: if you are, update the list
+      // 3: if you arent, update the spots remaining
+      if (data.day === day) {
+        console.log("Right day");
+        setDays((prev) => {
+          const updatedDay = {
+            ...prev[data.day],
+            spots: prev[data.day].spots - 1,
+          };
+          const days = {
+            ...prev,
+            [data.day]: updatedDay,
+          };
+          return days;
+        });
+        setAppointments((prev) => {
+          const appointment = {
+            ...prev[data.appointment],
+            interview: { ...data.interview },
+          };
+          const updatedAppointments = {
+            ...prev,
+            [data.appointment]: appointment,
+          };
+          return updatedAppointments;
+        });
+      } else {
+        console.log("Wrong day");
+        setDays((prev) => {
+          const updatedDay = {
+            ...prev[data.day],
+            spots: prev[data.day].spots - 1,
+          };
+          const days = {
+            ...prev,
+            [data.day]: updatedDay,
+          };
+          return days;
+        });
       }
     });
 
+    socket.on("delete_interview", (data) => {
+      console.log("delete_interview", data);
+    });
+
     return () => {
-      // socket.off("cancel_interview");
-      socket.off("book_interview", (data) => {
-        console.log(data);
-        const { appointment_id, interview } = data;
-        if (appointments[appointment_id]) {
-          bookInterview(appointment_id, interview);
-        }
-      });
+      socket.off("book_interview");
+      socket.off("delete_interview");
     };
   }, [day, appointments]);
   useEffect(() => {
@@ -43,6 +77,7 @@ export default function Application() {
       });
   }, []);
   useEffect(() => {
+    console.log("useEffect() called");
     axios
       .get(`http://localhost:8080/schedule/${day}`)
       .then((res) => res.data)
@@ -99,7 +134,6 @@ export default function Application() {
       };
       console.log(appointment);
       console.log(updatedAppointments);
-      socket.emit("book_interview", updatedAppointments);
       return updatedAppointments;
     });
     if (!isEdit) {
@@ -112,6 +146,8 @@ export default function Application() {
           ...prev,
           [day]: updatedDay,
         };
+        // console.log("updated day", updatedDay);
+        // console.log("days", days);
         return days;
       });
     }
@@ -138,7 +174,6 @@ export default function Application() {
       };
       console.log(updatedAppointment);
       console.log(updatedAppointments);
-      socket.emit("book_interview", updatedAppointments);
       return updatedAppointments;
     });
     setDays((prev) => {
@@ -168,6 +203,11 @@ export default function Application() {
             key={appointment.id}
             {...appointment}
             bookInterview={(interview) => {
+              socket.emit("book_interview", {
+                appointment: appointment.id,
+                interview: interview,
+                day: day,
+              });
               bookInterview(appointment.id, interview);
             }}
             deleteInterview={deleteInterview}
