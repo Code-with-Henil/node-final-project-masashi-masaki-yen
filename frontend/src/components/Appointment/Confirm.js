@@ -2,7 +2,7 @@ import React from "react";
 import Button from "../Button";
 
 const Confirm = (props) => {
-  console.log(props.onCancel);
+  // console.log(props.onCancel);
   return (
     <main className="appointment__card appointment__card--confirm">
       <h1 className="text--semi-bold">{props.message}</h1>

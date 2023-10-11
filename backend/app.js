@@ -24,8 +24,9 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("book_interview", data);
   });
 
-  socket.on("delete_book", (data) => {
+  socket.on("delete_interview", (data) => {
     socket.broadcast.emit("delete_interview", data);
+    console.log("delete_interview", data);
   });
 
   socket.on("disconnect", () => {

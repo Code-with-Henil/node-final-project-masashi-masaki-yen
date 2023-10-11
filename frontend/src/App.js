@@ -61,6 +61,44 @@ export default function Application() {
 
     socket.on("delete_interview", (data) => {
       console.log("delete_interview", data);
+      if (data.day === day) {
+        setDays((prev) => {
+          const updatedDay = {
+            ...prev[data.day],
+            spots: Number(prev[data.day].spots) + 1,
+          };
+          const updatedDays = {
+            ...prev,
+            [data.day]: updatedDay,
+          };
+          return updatedDays;
+        });
+        setAppointments((prev) => {
+          const updatedAppointment = {
+            ...prev[data.appointment],
+            interview: null,
+          };
+
+          delete updatedAppointment.interview;
+          const updatedAppointments = {
+            ...prev,
+            [data.appointment]: updatedAppointment,
+          };
+          return updatedAppointments;
+        });
+      } else {
+        setDays((prev) => {
+          const updatedDay = {
+            ...prev[data.day],
+            spots: Number(prev[data.day].spots) + 1,
+          };
+          const updatedDays = {
+            ...prev,
+            [data.day]: updatedDay,
+          };
+          return updatedDays;
+        });
+      }
     });
 
     return () => {
@@ -77,7 +115,6 @@ export default function Application() {
       });
   }, []);
   useEffect(() => {
-    console.log("useEffect() called");
     axios
       .get(`http://localhost:8080/schedule/${day}`)
       .then((res) => res.data)
@@ -213,6 +250,7 @@ export default function Application() {
             deleteInterview={deleteInterview}
             socket={socket}
             interviewers={availableInterviewers[appointment.id]}
+            day={day}
           />
         ))}
         <Appointment key="last" time="5pm" />

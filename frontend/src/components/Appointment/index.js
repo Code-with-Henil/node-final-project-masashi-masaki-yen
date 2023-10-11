@@ -35,7 +35,11 @@ const Appointment = (props) => {
             }}
             onConfirm={() => {
               props.deleteInterview(props.id);
-              props.socket.emit("delete_interview", props.id);
+              props.socket.emit("delete_interview", {
+                appointment: props.id,
+                interview: props.interview,
+                day: props.day,
+              });
               console.log("props", props);
               // socket.emit("cancel_interview", props.id);
               setIsDeleting(false);
