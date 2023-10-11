@@ -183,8 +183,6 @@ export default function Application() {
           ...prev,
           [day]: updatedDay,
         };
-        // console.log("updated day", updatedDay);
-        // console.log("days", days);
         return days;
       });
     }
